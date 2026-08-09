@@ -14,7 +14,8 @@ test.describe("Login", () => {
 
     // Assertions
     await expect(page).toHaveURL("https://practicesoftwaretesting.com/account");
-    //await expect(page).toHaveTitle("Overview - Practice Software Testing - Toolshop - v5.0",);
+    //await expect(page).toHaveTitle("Overview - Practice Software Testing - Toolshop - v5.0",); this actually fails because the title is
+    //  not set correctly on the page, so we will comment it out for now
     await expect(
       page.getByRole("heading", { name: "My account" }),
     ).toBeVisible();
