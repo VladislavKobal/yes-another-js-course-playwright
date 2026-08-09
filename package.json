@@ -1,0 +1,23 @@
+{
+  "name": "yes-another-js-course-playwright",
+  "version": "1.0.0",
+  "description": "yes-another-js-course-playwright",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladislavKobal/yes-another-js-course-playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VladislavKobal/yes-another-js-course-playwright/issues"
+  },
+  "homepage": "https://github.com/VladislavKobal/yes-another-js-course-playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0"
+  }
+}
