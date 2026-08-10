@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "yes-another-js-course-playwright",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:simple": "npx playwright test simple.spec.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VladislavKobal/yes-another-js-course-playwright.git"
