@@ -13,11 +13,11 @@ export class LoginPage {
     this.loginButton = page.getByRole("button", { name: "Login" });
   }
 
-  async goto() {
+  async goto(): Promise<void> {
     await this.page.goto("/auth/login");
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<void> {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();

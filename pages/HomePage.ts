@@ -9,11 +9,15 @@ export class HomePage {
     this.signInLink = page.getByRole("link", { name: "Sign in" });
   }
 
-  async goto() {
+  async goto(): Promise<void> {
     await this.page.goto("/");
   }
 
-  async goToLogin() {
+  async goToLogin(): Promise<void> {
     await this.signInLink.click();
+  }
+
+  async selectProduct(productName: string): Promise<void> {
+    await this.page.getByText(productName, { exact: true }).click();
   }
 }

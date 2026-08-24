@@ -11,7 +11,7 @@ export class AccountPage {
     this.userName = page.getByText("QA QA");
   }
 
-  async expectLoaded() {
+  async expectLoaded(): Promise<void> {
     await expect(this.page).toHaveURL("/account");
     await expect(this.heading).toBeVisible();
     await expect(this.userName).toBeVisible();
