@@ -6,6 +6,6 @@ test.describe("Login", () => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();
-    await loginPage.login("tatowof536@apdtax.com", "Tatowof536!");
+    await loginPage.login("admin@practicesoftwaretesting.com", "welcome01");
   });
 });
