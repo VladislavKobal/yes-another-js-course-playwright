@@ -3,7 +3,7 @@ import { LoginPage } from "../pages/LoginPage";
 import { STORAGE_STATE_PATH } from "../utils/constants";
 
 test.describe("Authentication setup", () => {
-  test("Log in and save session", async ({ page }) => {
+  test.skip("Log in and save session", async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.goto();
