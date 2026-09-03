@@ -36,15 +36,31 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      // Окремий проєкт, який виконує лише логін і зберігає сесію у файл.
+      // testMatch звужує коло файлів, які цей проєкт запускає, лише до
+      name: "auth",
+      testMatch: /auth\.login\.spec\.ts/,
+    },
+    {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+
+      dependencies: ["auth"],
+      // Без testIgnore проєкт chromium спробував би запустити
+      // auth.login.spec.ts ще раз, але він вже виконаний у проєкті auth і зберіг сесію у файл.
+      testIgnore: /auth\.login\.spec\.ts/,
+    },
+    {
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+      dependencies: ["auth"],
+      testIgnore: /auth\.login\.spec\.ts/,
+    },
+    {
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
+      dependencies: ["auth"],
+      testIgnore: /auth\.login\.spec\.ts/,
     },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
