@@ -1,29 +1,22 @@
-import { test, expect } from "@playwright/test";
-import { HomePage } from "../pages/HomePage";
-import { ProductPage } from "../pages/ProductPage";
-import { CartPage } from "../pages/CartPage";
+import { test, expect } from "../fixture";
 
 test.describe("Cart", () => {
-  test("Verify user can add product to cart", async ({ page }) => {
-    const homePage = new HomePage(page);
-    const productPage = new ProductPage(page);
-    const cartPage = new CartPage(page);
-
+  test("Verify user can add product to cart", async ({ app }) => {
     await test.step("Open product page", async () => {
-      await homePage.goto();
-      await homePage.selectProduct("Slip Joint Pliers");
-      await productPage.expectLoaded("Slip Joint Pliers", "9.17");
+      await app.homePage.goto();
+      await app.homePage.selectProduct("Slip Joint Pliers");
+      await app.productPage.expectLoaded("Slip Joint Pliers", "9.17");
     });
 
     await test.step("Add product to cart", async () => {
-      await productPage.addToCart();
-      await productPage.expectAddedToCart("Product added to shopping cart");
-      await expect(homePage.cartQuantityBadge).toHaveText("1");
+      await app.productPage.addToCart();
+      await app.productPage.expectAddedToCart("Product added to shopping cart");
+      await expect(app.homePage.cartQuantityBadge).toHaveText("1");
     });
 
     await test.step("Verify checkout page", async () => {
-      await homePage.goToCart();
-      await cartPage.expectLoaded("Slip Joint Pliers", 1);
+      await app.homePage.goToCart();
+      await app.cartPage.expectLoaded("Slip Joint Pliers", 1);
     });
   });
 });

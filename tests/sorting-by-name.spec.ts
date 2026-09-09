@@ -1,26 +1,27 @@
-import { test, expect } from "@playwright/test";
-import { HomePage } from "../pages/HomePage";
+import { test, expect } from "../fixture";
 
-// Playwright не має вбудованого test.each() (як у Jest) - офіційний спосіб
-// параметризації - звичайний цикл навколо test(). Кожен елемент масиву
-// породжує окремий, індивідуально названий тест ще на етапі збору тестів,
-// тому в звіті буде два незалежні тести, а не один цикл.
 const cases = [
-  { sortValue: "name,asc", label: "Name (A - Z)", direction: "ascending" as const },
-  { sortValue: "name,desc", label: "Name (Z - A)", direction: "descending" as const },
+  {
+    sortValue: "name,asc",
+    label: "Name (A - Z)",
+    direction: "ascending" as const,
+  },
+  {
+    sortValue: "name,desc",
+    label: "Name (Z - A)",
+    direction: "descending" as const,
+  },
 ];
 
 test.describe("Sorting by name", () => {
   for (const { sortValue, label, direction } of cases) {
     test(`Verify user can perform sorting by name: ${label}`, async ({
-      page,
+      app,
     }) => {
-      const homePage = new HomePage(page);
+      await app.homePage.goto();
+      await app.homePage.sortBy(sortValue);
 
-      await homePage.goto();
-      await homePage.sortBy(sortValue);
-
-      const names = await homePage.getProductNames();
+      const names = await app.homePage.getProductNames();
       const sortedNames = [...names].sort((a, b) =>
         direction === "ascending" ? a.localeCompare(b) : b.localeCompare(a),
       );
