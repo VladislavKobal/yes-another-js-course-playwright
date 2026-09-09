@@ -4,7 +4,7 @@ import { LoginPage } from "../pages/LoginPage";
 import { AccountPage } from "../pages/AccountPage";
 import { ProductPage } from "../pages/ProductPage";
 import { CartPage } from "../pages/CartPage";
-import { BillingAddressPage } from "../pages/BillingaAdresspage";
+import { BillingAddressPage } from "../pages/BillingAdressPage";
 import { PaymentPage } from "../pages/PaymentPage";
 import { ConfirmationPage } from "../pages/ConfirmationPage";
 
