@@ -1,15 +1,10 @@
-import { test } from "@playwright/test";
-import { LoginPage } from "../pages/LoginPage";
-import { AccountPage } from "../pages/AccountPage";
+import { test } from "../fixture";
 
 test.describe("Login", () => {
-  test("Verify login with valid credentials", async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const accountPage = new AccountPage(page);
+  test("Verify login with valid credentials", async ({ app }) => {
+    await app.loginPage.goto();
+    await app.loginPage.login("tatowof536@apdtax.com", "Tatowof536!");
 
-    await loginPage.goto();
-    await loginPage.login("tatowof536@apdtax.com", "Tatowof536!");
-
-    await accountPage.expectLoaded();
+    await app.accountPage.expectLoaded();
   });
 });
