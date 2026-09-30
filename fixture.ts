@@ -1,9 +1,23 @@
-import { test as base, expect, Page } from "@playwright/test";
+import {
+  test as base,
+  expect,
+  Page,
+  APIRequestContext,
+} from "@playwright/test";
 import { App } from "./app/App";
+import { loginViaApi } from "./api/Authapi";
+import { requireEnv } from "./utils/env";
 
 type Fixtures = {
   app: App;
   loggedInApp: App;
+};
+
+const AUTH_TOKEN_STORAGE_KEY = "auth-token";
+
+const DEFAULT_CREDENTIALS = {
+  email: requireEnv("USER_EMAIL"),
+  password: requireEnv("USER_PASSWORD"),
 };
 
 export const test = base.extend<Fixtures>({
@@ -13,14 +27,18 @@ export const test = base.extend<Fixtures>({
   },
 
   loggedInApp: async (
-    { app }: { app: App },
+    { app, request }: { app: App; request: APIRequestContext },
     use: (app: App) => Promise<void>,
   ) => {
-    await app.loginPage.goto();
-    await app.loginPage.login(
-      "customer@practicesoftwaretesting.com",
-      "welcome01",
+    const accessToken = await loginViaApi(request, DEFAULT_CREDENTIALS);
+
+    await app.page.addInitScript(
+      ({ key, value }) => {
+        window.localStorage.setItem(key, value);
+      },
+      { key: AUTH_TOKEN_STORAGE_KEY, value: accessToken },
     );
+
     await use(app);
   },
 });
