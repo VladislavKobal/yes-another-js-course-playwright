@@ -149,3 +149,7 @@ vite.config.ts.timestamp-*
 /playwright/.cache/
 /playwright/.auth/
 node_modules/
+
+# env
+.env
+.env.local

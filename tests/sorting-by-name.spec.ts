@@ -13,7 +13,7 @@ const cases = [
   },
 ];
 
-test.describe("Sorting by name", () => {
+test.describe("Sorting by name", { tag: "@regression" }, () => {
   for (const { sortValue, label, direction } of cases) {
     test(`Verify user can perform sorting by name: ${label}`, async ({
       app,

@@ -6,19 +6,18 @@ import {
 } from "@playwright/test";
 import { App } from "./app/App";
 import { loginViaApi } from "./api/Authapi";
+import { requireEnv } from "./utils/env";
 
 type Fixtures = {
   app: App;
   loggedInApp: App;
 };
 
-// Підтверджено реальним storageState-файлом для цього сайту: Angular-app
-// читає токен саме з localStorage під цим ключем.
 const AUTH_TOKEN_STORAGE_KEY = "auth-token";
 
 const DEFAULT_CREDENTIALS = {
-  email: "customer@practicesoftwaretesting.com",
-  password: "welcome01",
+  email: requireEnv("USER_EMAIL"),
+  password: requireEnv("USER_PASSWORD"),
 };
 
 export const test = base.extend<Fixtures>({

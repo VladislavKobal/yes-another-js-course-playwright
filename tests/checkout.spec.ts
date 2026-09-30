@@ -1,5 +1,5 @@
-
 import { test } from "../fixture";
+import { App } from "../app/App";
 import { getFutureExpirationDate } from "../pages/PaymentPage";
 import type { BillingAddressData } from "../pages/BillingAdressPage";
 import type { CreditCardDetails } from "../pages/PaymentPage";
@@ -20,49 +20,57 @@ const CREDIT_CARD: CreditCardDetails = {
   cardHolderName: "Jane Tester",
 };
 
-test.describe("Checkout - authenticated user", () => {
-  test("should complete purchase with credit card", async ({
+async function addFirstProductToCart(
+  app: App,
+): Promise<{ name: string; price: number }> {
+  await app.homePage.goto();
+  return app.homePage.addFirstProductToCart();
+}
+
+async function verifyCartContents(
+  app: App,
+  product: { name: string; price: number },
+): Promise<void> {
+  await app.homePage.goToCart();
+  await app.cartPage.expectItemMatches(product.name, product.price);
+}
+
+async function proceedToCheckoutAsAuthenticatedUser(app: App): Promise<void> {
+  await app.cartPage.proceedToCheckout();
+  // loggedInApp вже виконав логін до початку тесту, тому тут не має
+  // з'явитись форма Sign in - користувача одразу пускає на крок адреси.
+  await app.billingAddressPage.expectAlreadyAuthenticated();
+}
+
+async function submitBillingAddress(app: App): Promise<void> {
+  await app.billingAddressPage.fillMissingFields(BILLING_ADDRESS);
+  await app.billingAddressPage.proceedToCheckout();
+}
+
+async function payWithCreditCard(app: App): Promise<void> {
+  await app.paymentPage.payWithCreditCard(CREDIT_CARD);
+}
+
+test.describe("Checkout (logged-in user)", { tag: "@regression" }, () => {
+  test("Verify user can complete purchase with credit card", async ({
     loggedInApp: app,
   }) => {
-    // Arrange
-    await test.step("Add first product to cart", async () => {
-      await app.homePage.goto();
-      await app.homePage.addFirstProductToCart();
-    });
+    const product =
+      await test.step("Add first product from homepage to cart", () =>
+        addFirstProductToCart(app));
 
-    // Cart
-    await test.step("Open cart and confirm product", async () => {
-      await app.homePage.goToCart();
+    await test.step("Verify cart contents", () =>
+      verifyCartContents(app, product));
 
-      const product = await app.cartPage.getFirstProduct();
+    await test.step("Proceed to checkout", () =>
+      proceedToCheckoutAsAuthenticatedUser(app));
 
-      await app.cartPage.expectItemMatches(
-        product.name,
-        product.price,
-      );
-    });
+    await test.step("Fill missing billing address fields", () =>
+      submitBillingAddress(app));
 
-    // Checkout
-    await test.step("Proceed to checkout", async () => {
-      await app.cartPage.proceedToCheckout();
-      await app.billingAddressPage.expectAlreadyAuthenticated();
-    });
+    await test.step("Pay with credit card", () => payWithCreditCard(app));
 
-    // Billing address
-    await test.step("Complete billing address", async () => {
-      await app.billingAddressPage.fillMissingFields(BILLING_ADDRESS);
-      await app.billingAddressPage.proceedToCheckout();
-    });
-
-    // Payment
-    await test.step("Pay with credit card", async () => {
-      await app.paymentPage.payWithCreditCard(CREDIT_CARD);
-    });
-
-    // Assert
-    await test.step("Confirm successful payment", async () => {
-      await app.confirmationPage.expectPaymentSuccessful();
-    });
+    await test.step("Verify payment was successful", () =>
+      app.confirmationPage.expectPaymentSuccessful());
   });
 });
-

@@ -1,7 +1,7 @@
 import { test, expect } from "../fixture";
 import { mockProductsList } from "../mocks/Products.mock";
 
-test.describe("Product list (mocked API)", () => {
+test.describe("Product list (mocked API)", { tag: "@regression" }, () => {
   test("Verify 20 mocked products are displayed on the homepage", async ({
     app,
   }) => {

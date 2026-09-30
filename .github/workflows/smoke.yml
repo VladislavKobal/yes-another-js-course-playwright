@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Smoke Tests
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 20
 
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
@@ -28,14 +28,14 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
 
-      - name: Run Playwright tests
-        run: npx playwright test
+      - name: Run smoke tests
+        run: npx playwright test --project=smoke
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: smoke-report
           path: playwright-report/
-          retention-days: 30
+          retention-days: 14

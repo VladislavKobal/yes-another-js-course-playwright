@@ -1,6 +1,6 @@
 import { test, expect } from "../fixture";
 
-test.describe("Cart", () => {
+test.describe("Cart", { tag: "@smoke" }, () => {
   test("Verify user can add product to cart", async ({ app }) => {
     await test.step("Open product page", async () => {
       await app.homePage.goto();

@@ -1,7 +1,7 @@
 import { test, expect } from "../fixture";
 import { Category } from "../emun/category.enum";
 
-test.describe("Category filter", () => {
+test.describe("Category filter", { tag: "@regression" }, () => {
   test("Verify user can filter products by category", async ({ app }) => {
     await app.homePage.goto();
 
