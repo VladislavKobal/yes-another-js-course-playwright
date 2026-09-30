@@ -11,12 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    env:
-      BASE_URL: ${{ secrets.BASE_URL }}
-      USER_NAME: ${{ secrets.USER_NAME }}
-      USER_EMAIL: ${{ secrets.USER_EMAIL }}
-      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
-
     steps:
       - uses: actions/checkout@v4
 
@@ -32,6 +26,11 @@ jobs:
 
       - name: Run smoke tests
         run: npx playwright test --project=smoke
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
 
       - uses: actions/upload-artifact@v4
         if: always()
